@@ -1,10 +1,25 @@
 local cells = {}
-cells.length = 50
+cells.scale = 50
+cells.length = nil
 
 -- Initializes [rows] x [cols] cell matrix with dead cells
 function cells:init(rows, cols)
   love.graphics.setColor(255,255,255)
+  cells.length = rows
+  for i=1,rows do
+    cells[i] = {}
+    for j=1,cols do
+      cells[i][j] = false
+    end
+  end
+end
 
+-- Returns a cells object
+-- @param scale The length of one cell side in pixels
+function cells:new(rows, cols, scale)
+  local c = {}
+  c.scale = scale
+  c.length = rows
   for i=1,rows do
     cells[i] = {}
     for j=1,cols do
@@ -15,7 +30,7 @@ end
 
 -- Returns the pixel position of the top left corner of a cell
 function cells:getPos(row, col)
-  return row * cells.length, col * cells.length
+  return row * cells.scale, col * cells.scale
 end
 
 -- Sets alive status of cell at [row, col] to true
@@ -40,10 +55,10 @@ function cells:click(mouseX, mouseY)
       local cellX, cellY = cells:getPos(row, col)
       if mouseX >= cellX and
          mouseY >= cellY and
-         mouseX <= cellX + cells.length and
-         mouseY <= cellY + cells.length
+         mouseX <= cellX + cells.scale and
+         mouseY <= cellY + cells.scale
       then
-         cells[row][col] = not cells[row][col]
+        cells[row][col] = not cells[row][col]
       end
     end
   end
@@ -64,6 +79,19 @@ function cells:setCheckered()
   end
 end
 
+-- Returns the number of live neighbors of the cell at [row, col]
+function cells:getNeighbors(row, col)
+  local neighbors = 0
+  for i=row-1,row+1 do
+    for j=col-1,col+1 do
+      if i > 0 and j > 0 and i <= cells.length and j <= cells.length then
+        neighbors = neighbors + (cells[i][j] and 1 or 0)
+      end
+    end
+  end
+  return neighbors - (cells[row][col] and 1 or 0) -- kinda janky
+end
+
 -- Draws matrix of cells
 function cells:draw()
   for row, rows in ipairs(cells) do
@@ -75,11 +103,11 @@ function cells:draw()
       end
       
       local x, y = cells:getPos(row, col)
-      love.graphics.rectangle('fill', x, y, cells.length, cells.length)
+      love.graphics.rectangle('fill', x, y, cells.scale, cells.scale)
 
       -- draw cell outline
       love.graphics.setColor(0.2,0.2,0.2)
-      love.graphics.rectangle('line', x, y, cells.length, cells.length)
+      love.graphics.rectangle('line', x, y, cells.scale, cells.scale)
     end
   end
 end
