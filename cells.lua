@@ -68,7 +68,7 @@ function Cells:setCheckered()
 end
 
 -- Returns the number of live neighbors of the cell at [row, col]
-function Cells:getNeighbors(row, col)
+function Cells:getNumLiveNeighbors(row, col)
   local neighbors = 0
   for i=row-1,row+1 do
     for j=col-1,col+1 do
