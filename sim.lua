@@ -5,11 +5,11 @@ local Cells = require 'cells'
 local Sim = Class{}
 
 function Sim:init()
-  -- green background
-  love.graphics.setBackgroundColor(72/255,244/255,66/255)
+  -- white background
+  love.graphics.setBackgroundColor(1,1,1)
 
   -- initialize 5x5 2d array with dead cells
-  self.main = Cells(10,10,25)
+  self.main = Cells(50,50,10)
   self.prev = nil
   self.main:setCheckered()
 

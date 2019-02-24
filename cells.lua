@@ -86,7 +86,7 @@ function Cells:draw()
     for col, cell in ipairs(rows) do
       -- draw cell fill
       if cell then
-          love.graphics.setColor(0,0,0) else
+          love.graphics.setColor(0.2,0.2,0.2) else
           love.graphics.setColor(1,1,1)
       end
       
@@ -94,7 +94,7 @@ function Cells:draw()
       love.graphics.rectangle('fill', x, y, self.scale, self.scale)
 
       -- draw cell outline
-      love.graphics.setColor(0.2,0.2,0.2)
+      love.graphics.setColor(0.8,0.8,0.8)
       love.graphics.rectangle('line', x, y, self.scale, self.scale)
     end
   end
